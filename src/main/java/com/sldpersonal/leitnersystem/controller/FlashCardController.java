@@ -1,11 +1,9 @@
 package com.sldpersonal.leitnersystem.controller;
 
+import com.sldpersonal.leitnersystem.model.FlashcardCreateRequest;
 import com.sldpersonal.leitnersystem.service.FlashcardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/flashcard")
@@ -19,7 +17,7 @@ public class FlashCardController {
     }
 
     @PostMapping
-    public String createFlashCard() {
-        return "Hello World";
+    public int createFlashCard(@RequestBody FlashcardCreateRequest request) {
+        return flashCardService.createFlashCard(request);
     }
 }

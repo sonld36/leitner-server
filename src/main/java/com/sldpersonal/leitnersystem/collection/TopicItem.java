@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.sql.Date;
 import java.util.List;
 
-@Document(collection = "topic_item")
+@Document(collection = "topic_items")
 @Builder
 @Getter
 public class TopicItem {

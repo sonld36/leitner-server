@@ -1,6 +1,7 @@
 package com.sldpersonal.leitnersystem.service.impl;
 
 import com.sldpersonal.leitnersystem.collection.TopicItem;
+import com.sldpersonal.leitnersystem.mapper.ITopicMapper;
 import com.sldpersonal.leitnersystem.model.PaginationResponse;
 import com.sldpersonal.leitnersystem.model.TopicCreateRequest;
 import com.sldpersonal.leitnersystem.model.TopicResponse;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
+    private final ITopicMapper mapper;
 
     @Override
     public int createTopic(TopicCreateRequest request) {
@@ -31,11 +33,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public PaginationResponse<TopicResponse> getTopics(int page) {
         var topics = topicRepository.findAll(Pageable.ofSize(10).withPage(page - 1));
-        var data = topics.getContent().stream().map(topic -> TopicResponse.builder()
-                .id(topic.getId())
-                .name(topic.getName())
-                .description(topic.getDescription())
-                .build()).toList();
+        var data = topics.getContent().stream().map(mapper::toTopicResponse).toList();
 
         return PaginationResponse.<TopicResponse>builder()
                 .data(data)

@@ -1,5 +1,7 @@
 package com.sldpersonal.leitnersystem.service;
 
-public interface FlashcardService {
+import com.sldpersonal.leitnersystem.model.FlashcardCreateRequest;
 
+public interface FlashcardService {
+    int createFlashCard(FlashcardCreateRequest request);
 }
