@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface FlashcardRepository extends MongoRepository<FlashCard, String> {
     List<FlashCard> findByTopicId(String topicId);
+
+    List<FlashCard> saveAll(List<FlashCard> flashCards);
 }

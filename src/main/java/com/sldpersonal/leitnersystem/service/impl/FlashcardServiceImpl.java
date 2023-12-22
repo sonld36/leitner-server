@@ -8,6 +8,7 @@ import com.sldpersonal.leitnersystem.model.FlashcardResponse;
 import com.sldpersonal.leitnersystem.model.PaginationResponse;
 import com.sldpersonal.leitnersystem.repository.FlashcardRepository;
 import com.sldpersonal.leitnersystem.service.FlashcardService;
+import com.sldpersonal.leitnersystem.utils.BoxLevelUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class FlashcardServiceImpl implements FlashcardService {
     @Override
     public List<FlashcardResponse> getByLevelBox(List<FlashCard> flashCards, Constant.BoxLevel level) {
         return flashCards.stream()
-                .filter(flashCard -> flashCard.getBoxLevel() == level)
+                .filter(flashCard -> flashCard.getBoxLevel() == level && BoxLevelUtil.isSufficientTimePassed(flashCard.getLastReview(), level.getValue()))
                 .map(mapper::toFlashcardResponse)
                 .toList();
     }

@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +19,24 @@ public class FlashCard {
     private String topicId;
     private Constant.BoxLevel boxLevel;
     private boolean active;
-    private Timestamp lastReview;
+    private Date lastReview;
     private List<String> notes;
     private Date createdAt;
     private Date updatedAt;
+
+    public FlashCard onNextLevel() {
+        if (this.boxLevel.getValue() == Constant.BoxLevel.EVERY_MONTH.getValue()) {
+            return this;
+        }
+        this.boxLevel = Constant.BoxLevel.values()[this.boxLevel.getValue() + 1];
+        return this;
+    }
+
+    public FlashCard onPreviousLevel() {
+        if (this.boxLevel.getValue() == Constant.BoxLevel.EVERYDAY.getValue()) {
+            return this;
+        }
+        this.boxLevel = Constant.BoxLevel.values()[this.boxLevel.getValue() - 1];
+        return this;
+    }
 }

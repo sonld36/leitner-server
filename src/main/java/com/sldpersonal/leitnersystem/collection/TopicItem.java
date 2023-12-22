@@ -17,6 +17,7 @@ public class TopicItem {
     private String description;
     private String owner;
     private List<String> tags;
+    private List<TopicLearningSession> sessions;
     private boolean active;
     private Date createdAt;
     private Date updatedAt;

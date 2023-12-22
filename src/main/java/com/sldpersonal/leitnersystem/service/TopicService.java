@@ -1,9 +1,6 @@
 package com.sldpersonal.leitnersystem.service;
 
-import com.sldpersonal.leitnersystem.model.LearningTopicResponse;
-import com.sldpersonal.leitnersystem.model.PaginationResponse;
-import com.sldpersonal.leitnersystem.model.TopicCreateRequest;
-import com.sldpersonal.leitnersystem.model.TopicResponse;
+import com.sldpersonal.leitnersystem.model.*;
 
 public interface TopicService {
     int createTopic(TopicCreateRequest request);
@@ -12,4 +9,5 @@ public interface TopicService {
     int deleteTopic(String id);
 
     LearningTopicResponse getLearningTopic(String topicId);
+    void learnDone(String topicId, ResultLearningSessionDTO result);
 }

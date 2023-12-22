@@ -1,9 +1,6 @@
 package com.sldpersonal.leitnersystem.controller;
 
-import com.sldpersonal.leitnersystem.model.LearningTopicResponse;
-import com.sldpersonal.leitnersystem.model.PaginationResponse;
-import com.sldpersonal.leitnersystem.model.TopicCreateRequest;
-import com.sldpersonal.leitnersystem.model.TopicResponse;
+import com.sldpersonal.leitnersystem.model.*;
 import com.sldpersonal.leitnersystem.service.TopicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +24,11 @@ public class TopicController {
     @GetMapping("/learn")
     public LearningTopicResponse getLearningTopic(@RequestParam String topicId) {
         return topicService.getLearningTopic(topicId);
+    }
+
+    @PostMapping("/learn-done")
+    public void learnDone(@RequestParam String topicId, @RequestBody ResultLearningSessionDTO result) {
+        topicService.learnDone(topicId, result);
     }
 
     @PutMapping("/{id}")

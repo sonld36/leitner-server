@@ -1,6 +1,8 @@
 package com.sldpersonal.leitnersystem.mapper;
 
 import com.sldpersonal.leitnersystem.collection.TopicItem;
+import com.sldpersonal.leitnersystem.collection.TopicLearningSession;
+import com.sldpersonal.leitnersystem.model.ResultLearningSessionDTO;
 import com.sldpersonal.leitnersystem.model.TopicCreateRequest;
 import com.sldpersonal.leitnersystem.model.TopicResponse;
 import org.mapstruct.Mapper;

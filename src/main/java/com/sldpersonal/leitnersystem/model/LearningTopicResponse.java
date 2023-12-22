@@ -13,4 +13,5 @@ public class LearningTopicResponse {
     List<FlashcardResponse> everyWeek;
     List<FlashcardResponse> everyTwoWeeks;
     List<FlashcardResponse> everyMonth;
+    List<FlashcardResponse> shuffle;
 }
