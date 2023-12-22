@@ -2,6 +2,7 @@ package com.sldpersonal.leitnersystem.collection;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Date;
@@ -16,6 +17,7 @@ public class TopicItem {
     private String description;
     private String owner;
     private List<String> tags;
+    private boolean active;
     private Date createdAt;
     private Date updatedAt;
 }

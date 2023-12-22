@@ -1,14 +1,11 @@
 package com.sldpersonal.leitnersystem.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
-@RequiredArgsConstructor
+@Builder
 public class TopicResponse {
     private String id;
     private String name;

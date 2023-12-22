@@ -1,5 +1,6 @@
 package com.sldpersonal.leitnersystem.controller;
 
+import com.sldpersonal.leitnersystem.model.LearningTopicResponse;
 import com.sldpersonal.leitnersystem.model.PaginationResponse;
 import com.sldpersonal.leitnersystem.model.TopicCreateRequest;
 import com.sldpersonal.leitnersystem.model.TopicResponse;
@@ -21,6 +22,11 @@ public class TopicController {
     @GetMapping
     public PaginationResponse<TopicResponse> getTopics(@RequestParam(defaultValue = "1") int page) {
         return topicService.getTopics(page);
+    }
+
+    @GetMapping("/learn")
+    public LearningTopicResponse getLearningTopic(@RequestParam String topicId) {
+        return topicService.getLearningTopic(topicId);
     }
 
     @PutMapping("/{id}")

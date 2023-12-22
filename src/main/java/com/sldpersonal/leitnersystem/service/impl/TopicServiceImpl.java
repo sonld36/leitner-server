@@ -1,11 +1,14 @@
 package com.sldpersonal.leitnersystem.service.impl;
 
 import com.sldpersonal.leitnersystem.collection.TopicItem;
+import com.sldpersonal.leitnersystem.common.Constant;
 import com.sldpersonal.leitnersystem.mapper.ITopicMapper;
+import com.sldpersonal.leitnersystem.model.LearningTopicResponse;
 import com.sldpersonal.leitnersystem.model.PaginationResponse;
 import com.sldpersonal.leitnersystem.model.TopicCreateRequest;
 import com.sldpersonal.leitnersystem.model.TopicResponse;
 import com.sldpersonal.leitnersystem.repository.TopicRepository;
+import com.sldpersonal.leitnersystem.service.FlashcardService;
 import com.sldpersonal.leitnersystem.service.TopicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -18,14 +21,11 @@ import java.util.List;
 public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
     private final ITopicMapper mapper;
+    private final FlashcardService flashcardService;
 
     @Override
     public int createTopic(TopicCreateRequest request) {
-        var topic = TopicItem.builder().name(request.getName())
-                .description(request.getDescription())
-                .owner(request.getOwner())
-                .tags(List.of(request.getTags()))
-                .build();
+        var topic = mapper.fromTopicCreateRequest(request);
         topicRepository.save(topic);
         return 1;
     }
@@ -58,5 +58,23 @@ public class TopicServiceImpl implements TopicService {
     public int deleteTopic(String id) {
         topicRepository.deleteById(id);
         return 1;
+    }
+
+    @Override
+    public LearningTopicResponse getLearningTopic(String topicId) {
+        var flashCards = flashcardService.getFlashCardByTopicId(topicId);
+        var everyDayCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERYDAY);
+        var everyThreeDaysCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_THREE_DAYS);
+        var everyTwoWeeksCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_TWO_WEEKS);
+        var everyWeekCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_WEEK);
+        var everyMonthCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_MONTH);
+
+        return LearningTopicResponse.builder()
+                .everyday(everyDayCards)
+                .everyThreeDays(everyThreeDaysCards)
+                .everyTwoWeeks(everyTwoWeeksCards)
+                .everyWeek(everyWeekCards)
+                .everyMonth(everyMonthCards)
+                .build();
     }
 }

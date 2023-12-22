@@ -1,6 +1,8 @@
 package com.sldpersonal.leitnersystem.controller;
 
 import com.sldpersonal.leitnersystem.model.FlashcardCreateRequest;
+import com.sldpersonal.leitnersystem.model.FlashcardResponse;
+import com.sldpersonal.leitnersystem.model.PaginationResponse;
 import com.sldpersonal.leitnersystem.service.FlashcardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +14,8 @@ public class FlashCardController {
     private final FlashcardService flashCardService;
 
     @GetMapping
-    public String getFlashCard() {
-        return "Hello World";
+    public PaginationResponse<FlashcardResponse> getFlashCard(@RequestParam int page) {
+        return flashCardService.getFlashCard(page);
     }
 
     @PostMapping
