@@ -22,8 +22,11 @@ public class TopicServiceSideEffect {
     @EventListener(UpdateBoxFlashcardEvent.class)
     public void updateBoxFlashcard(UpdateBoxFlashcardEvent event) {
         var aggregated = aggregate(event.flashcardsSession());
+        var flashcards = flashcardRepository.findAllById(aggregated.stream().map(AggregateFlashcardSession::getFlashcardId).toList());
         var flashcardsUpdate = aggregated.stream().map(aggregateFlashcardSession -> {
-            var flashcard = flashcardRepository.findById(aggregateFlashcardSession.getFlashcardId()).orElseThrow();
+            var flashcard = flashcards.stream()
+                    .filter(flashCard -> flashCard.getId().equals(aggregateFlashcardSession.getFlashcardId()))
+                    .findFirst().orElseThrow();
             return getNextLevel(aggregateFlashcardSession, flashcard);
         }).toList();
         flashcardRepository.saveAll(flashcardsUpdate);
@@ -62,7 +65,7 @@ public class TopicServiceSideEffect {
                 var couldNext = (double) flashcardSession.getStroke() / flashcardSession.getTotalAppear() >= 0.75;
                 return couldNext ? flashcard.onNextLevel() : flashcard;
             }
-            case EVERY_THREE_DAYS, EVERY_TWO_WEEKS -> {
+            case EVERY_THREE_DAYS, EVERY_WEEK -> {
                 var checkRotation = flashcardSession.getStroke() / flashcardSession.getTotalAppear();
                 if (checkRotation >= 0.85) {
                     return flashcard.onNextLevel();
@@ -71,7 +74,7 @@ public class TopicServiceSideEffect {
                 }
                 return flashcard;
             }
-            case EVERY_WEEK, EVERY_MONTH -> {
+            case EVERY_TWO_WEEKS, EVERY_MONTH -> {
                 var checkRotation = (double) flashcardSession.getStroke() / flashcardSession.getTotalAppear();
                 if (checkRotation >= 0.95) {
                     return flashcard.onNextLevel();
