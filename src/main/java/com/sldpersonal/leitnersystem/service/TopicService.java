@@ -10,4 +10,6 @@ public interface TopicService {
 
     LearningTopicResponse getLearningTopic(String topicId);
     void learnDone(String topicId, ResultLearningSessionDTO result);
+
+    TopicInformationResponse getTopicInformation(String id);
 }

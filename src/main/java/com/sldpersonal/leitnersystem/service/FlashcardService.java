@@ -11,9 +11,9 @@ import java.util.List;
 public interface FlashcardService {
     int createFlashCard(FlashcardCreateRequest request);
 
-    public List<FlashcardResponse> getByLevelBox(List<FlashCard> flashCards, Constant.BoxLevel level);
+    List<FlashcardResponse> getByLevelBox(List<FlashcardResponse> flashCards, Constant.BoxLevel level);
 
     PaginationResponse<FlashcardResponse> getFlashCard(int page);
 
-    List<FlashCard> getFlashCardByTopicId(String topicId);
+    List<FlashcardResponse> getFlashCardByTopicId(String topicId);
 }

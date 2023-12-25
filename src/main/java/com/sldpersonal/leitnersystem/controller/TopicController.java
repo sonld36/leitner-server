@@ -21,13 +21,20 @@ public class TopicController {
         return topicService.getTopics(page);
     }
 
-    @GetMapping("/learn")
-    public LearningTopicResponse getLearningTopic(@RequestParam String topicId) {
+    @GetMapping("/{id}")
+    public TopicInformationResponse getTopicInformation(@PathVariable String id) {
+        return topicService.getTopicInformation(id);
+    }
+
+    @GetMapping("/learn/{topicId}")
+    public LearningTopicResponse getLearningTopic(@PathVariable String topicId) {
         return topicService.getLearningTopic(topicId);
     }
 
-    @PostMapping("/learn-done")
-    public void learnDone(@RequestParam String topicId, @RequestBody ResultLearningSessionDTO result) {
+
+
+    @PostMapping("/learn-done/{topicId}")
+    public void learnDone(@PathVariable String topicId, @RequestBody ResultLearningSessionDTO result) {
         topicService.learnDone(topicId, result);
     }
 

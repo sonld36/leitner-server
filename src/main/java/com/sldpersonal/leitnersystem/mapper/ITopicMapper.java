@@ -20,5 +20,6 @@ public interface ITopicMapper {
     @Mapping(target = "createdAt", expression = "java(new java.sql.Date(System.currentTimeMillis()))")
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "active", expression = "java(true)")
+    @Mapping(target = "owner", expression = "java(request.getOwner() != null ? request.getOwner() : \"admin\")")
     TopicItem fromTopicCreateRequest(TopicCreateRequest request);
 }

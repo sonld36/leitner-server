@@ -28,10 +28,9 @@ public class FlashcardServiceImpl implements FlashcardService {
     }
 
     @Override
-    public List<FlashcardResponse> getByLevelBox(List<FlashCard> flashCards, Constant.BoxLevel level) {
+    public List<FlashcardResponse> getByLevelBox(List<FlashcardResponse> flashCards, Constant.BoxLevel level) {
         return flashCards.stream()
-                .filter(flashCard -> flashCard.getBoxLevel() == level && BoxLevelUtil.isSufficientTimePassed(flashCard.getLastReview(), level.getValue()))
-                .map(mapper::toFlashcardResponse)
+                .filter(flashCard -> flashCard.getBoxLevel() == level)
                 .toList();
     }
 
@@ -47,7 +46,7 @@ public class FlashcardServiceImpl implements FlashcardService {
     }
 
     @Override
-    public List<FlashCard> getFlashCardByTopicId(String topicId) {
-        return flashcardRepository.findByTopicId(topicId);
+    public List<FlashcardResponse> getFlashCardByTopicId(String topicId) {
+        return mapper.toListFlashcardResponse(flashcardRepository.findByTopicId(topicId));
     }
 }

@@ -2,10 +2,9 @@ package com.sldpersonal.leitnersystem.collection;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "topic_items")

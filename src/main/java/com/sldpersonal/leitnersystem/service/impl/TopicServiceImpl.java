@@ -9,6 +9,7 @@ import com.sldpersonal.leitnersystem.model.event.UpdateBoxFlashcardEvent;
 import com.sldpersonal.leitnersystem.repository.TopicRepository;
 import com.sldpersonal.leitnersystem.service.FlashcardService;
 import com.sldpersonal.leitnersystem.service.TopicService;
+import com.sldpersonal.leitnersystem.utils.BoxLevelUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
@@ -66,11 +67,26 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public LearningTopicResponse getLearningTopic(String topicId) {
         var flashCards = flashcardService.getFlashCardByTopicId(topicId);
-        var everyDayCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERYDAY);
-        var everyThreeDaysCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_THREE_DAYS);
-        var everyTwoWeeksCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_TWO_WEEKS);
-        var everyWeekCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_WEEK);
-        var everyMonthCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_MONTH);
+        var everyDayCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERYDAY)
+                .stream().filter(flashcardResponse ->
+                        BoxLevelUtil.isSufficientTimePassed(flashcardResponse.getLastReview(), Constant.BoxLevel.EVERYDAY.getValue()))
+                .toList();
+        var everyThreeDaysCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_THREE_DAYS)
+                .stream().filter(flashcardResponse ->
+                        BoxLevelUtil.isSufficientTimePassed(flashcardResponse.getLastReview(), Constant.BoxLevel.EVERY_THREE_DAYS.getValue()))
+                .toList();
+        var everyTwoWeeksCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_TWO_WEEKS)
+                .stream().filter(flashcardResponse ->
+                        BoxLevelUtil.isSufficientTimePassed(flashcardResponse.getLastReview(), Constant.BoxLevel.EVERY_TWO_WEEKS.getValue()))
+                .toList();
+        var everyWeekCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_WEEK)
+                .stream().filter(flashcardResponse ->
+                        BoxLevelUtil.isSufficientTimePassed(flashcardResponse.getLastReview(), Constant.BoxLevel.EVERY_WEEK.getValue()))
+                .toList();
+        var everyMonthCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_MONTH)
+                .stream().filter(flashcardResponse ->
+                        BoxLevelUtil.isSufficientTimePassed(flashcardResponse.getLastReview(), Constant.BoxLevel.EVERY_MONTH.getValue()))
+                .toList();
         List<FlashcardResponse> merge = new ArrayList<>();
         merge.addAll(everyDayCards);
         merge.addAll(everyThreeDaysCards);
@@ -96,6 +112,30 @@ public class TopicServiceImpl implements TopicService {
         topic.getSessions().add(topicLearningSession);
         topicRepository.save(topic);
         publisher.publishEvent(new UpdateBoxFlashcardEvent(result.getFlashcardLearningSessionDTOList()));
+    }
+
+    @Override
+    public TopicInformationResponse getTopicInformation(String id) {
+        var flashCards = flashcardService.getFlashCardByTopicId(id);
+        var everyDayCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERYDAY);
+        var everyThreeDaysCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_THREE_DAYS);
+        var everyTwoWeeksCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_TWO_WEEKS);
+        var everyWeekCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_WEEK);
+        var everyMonthCards = flashcardService.getByLevelBox(flashCards, Constant.BoxLevel.EVERY_MONTH);
+        return TopicInformationResponse.builder()
+                .id(id)
+                .boxesInformation(
+                        TopicInformationResponse.BoxInformation.builder()
+                                .everyDay(everyDayCards.size())
+                                .everyThreeDays(everyThreeDaysCards.size())
+                                .everyTwoWeeks(everyTwoWeeksCards.size())
+                                .everyWeek(everyWeekCards.size())
+                                .everyMonth(everyMonthCards.size())
+                                .build()
+                )
+                .flashcards(flashCards)
+                .totalCard(flashCards.size())
+                .build();
     }
 
     private TopicLearningSession mapToTopicLearningSession(ResultLearningSessionDTO result) {

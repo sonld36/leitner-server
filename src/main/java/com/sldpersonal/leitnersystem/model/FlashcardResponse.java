@@ -4,6 +4,8 @@ import com.sldpersonal.leitnersystem.common.Constant;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Date;
+
 @Builder
 @Getter
 public class FlashcardResponse {
@@ -13,6 +15,6 @@ public class FlashcardResponse {
     private Constant.TypeTextFlashCard type;
     private String topicId;
     private Constant.BoxLevel boxLevel;
-    private String lastReview;
+    private Date lastReview;
     private String[] notes;
 }
