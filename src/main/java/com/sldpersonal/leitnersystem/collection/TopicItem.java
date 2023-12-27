@@ -20,4 +20,14 @@ public class TopicItem {
     private boolean active;
     private Date createdAt;
     private Date updatedAt;
+
+
+    public TopicItem addSession(TopicLearningSession session) {
+        if (sessions == null) {
+            sessions = List.of(session);
+            return this;
+        }
+        sessions.add(session);
+        return this;
+    }
 }

@@ -66,7 +66,7 @@ public class TopicServiceSideEffect {
                 return couldNext ? flashcard.onNextLevel() : flashcard;
             }
             case EVERY_THREE_DAYS, EVERY_WEEK -> {
-                var checkRotation = flashcardSession.getStroke() / flashcardSession.getTotalAppear();
+                var checkRotation = (double) flashcardSession.getStroke() / flashcardSession.getTotalAppear();
                 if (checkRotation >= 0.85) {
                     return flashcard.onNextLevel();
                 } else if (checkRotation < 0.75) {

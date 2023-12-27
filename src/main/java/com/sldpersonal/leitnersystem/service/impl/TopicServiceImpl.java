@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -109,7 +110,7 @@ public class TopicServiceImpl implements TopicService {
     public void learnDone(String topicId, ResultLearningSessionDTO result) {
         var topic = topicRepository.findById(topicId).orElseThrow();
         var topicLearningSession = mapToTopicLearningSession(result);
-        topic.getSessions().add(topicLearningSession);
+        topic.addSession(topicLearningSession);
         topicRepository.save(topic);
         publisher.publishEvent(new UpdateBoxFlashcardEvent(result.getFlashcardLearningSessionDTOList()));
     }
@@ -140,8 +141,8 @@ public class TopicServiceImpl implements TopicService {
 
     private TopicLearningSession mapToTopicLearningSession(ResultLearningSessionDTO result) {
         return TopicLearningSession.builder()
-                .timeEnd(result.getTimeEnd())
-                .timeStart(result.getTimeStart())
+                .timeEnd(Date.from(result.getTimeEnd()))
+                .timeStart(Date.from(result.getTimeStart()))
                 .timesCorrect(result.getTimesCorrect())
                 .timesIncorrect(result.getTimesIncorrect())
                 .totalCard(result.getTotalCard())
