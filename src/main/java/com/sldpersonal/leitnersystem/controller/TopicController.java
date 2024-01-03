@@ -23,7 +23,8 @@ public class TopicController {
 
     @GetMapping("/{id}")
     public TopicInformationResponse getTopicInformation(@PathVariable String id) {
-        return topicService.getTopicInformation(id);
+        var tmp = topicService.getTopicInformation(id);
+        return tmp;
     }
 
     @GetMapping("/learn/{topicId}")

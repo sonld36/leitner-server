@@ -15,7 +15,7 @@ public class FlashCard {
     private String id;
     private String answer;
     private String question;
-    private Constant.TypeTextFlashCard type;
+    private byte[] image;
     private String topicId;
     private Constant.BoxLevel boxLevel;
     private boolean active;

@@ -16,7 +16,7 @@ public class FlashcardCreateRequest {
     @NotNull
     @Max(value = 255, message = "Question must be less than 255 characters")
     private String question;
-    private Constant.TypeTextFlashCard type;
+    private byte[] image;
     @NotNull
     private String topicId;
     private List<String> notes;
